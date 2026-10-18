@@ -41,14 +41,14 @@ COLOR_BAND = "rgba(76,120,168,0.20)"
 PRESETS = {
     "Reines Rauschen: der höchste Gipfel täuscht": {"n": 256, "background": "weiß", "line_mode": "aus", "line": 0.3, "snr": -6, "test": "Einzelfrequenz (weiß)", "alpha": 0.05, "band": "aus", "seed": DEFAULT_SEED},
     "Dieselbe Reihe mit Fisher-Schwelle: kein Alarm": {"n": 256, "background": "weiß", "line_mode": "aus", "line": 0.3, "snr": -6, "test": "Fisher g (weiß)", "alpha": 0.05, "band": "aus", "seed": DEFAULT_SEED},
-    "Rotes Rauschen: der weiße Test meldet immer": {"n": 256, "background": "AR(1) φ = 0,8", "line_mode": "aus", "line": 0.3, "snr": -6, "test": "Fisher g (weiß)", "alpha": 0.05, "band": "aus", "seed": DEFAULT_SEED},
+    "Rotes Rauschen: der weiße Test meldet fast immer": {"n": 256, "background": "AR(1) φ = 0,8", "line_mode": "aus", "line": 0.3, "snr": -6, "test": "Fisher g (weiß)", "alpha": 0.05, "band": "aus", "seed": DEFAULT_SEED},
     "Schwache Linie auf rotem Hintergrund": {"n": 512, "background": "AR(1) φ = 0,8", "line_mode": "an", "line": 0.3, "snr": -12, "test": "AR(1) angepasst + Šidák", "alpha": 0.05, "band": "aus", "seed": DEFAULT_SEED},
     "Steiler Hintergrund: Vorfilterung": {"n": 256, "background": "steil (AR(2))", "line_mode": "aus", "line": 0.3, "snr": -6, "test": "Vorfilterung AR(2) + Fisher g", "alpha": 0.05, "band": "aus", "seed": DEFAULT_SEED},
 }
 PRESET_HELP = {
     "Reines Rauschen: der höchste Gipfel täuscht": "Nur weißes Rauschen, keine Linie: Der höchste Gipfel überschreitet die Schwelle für eine einzelne Frequenz, obwohl nichts da ist.",
     "Dieselbe Reihe mit Fisher-Schwelle: kein Alarm": "Dieselben Daten, aber die Schwelle für das Maximum über alle Frequenzen (Fishers g): kein Alarm.",
-    "Rotes Rauschen: der weiße Test meldet immer": "AR(1)-Hintergrund ohne Linie: Der Test auf weißes Rauschen schlägt an, weil der Hintergrund bei tiefen Frequenzen von selbst hoch liegt.",
+    "Rotes Rauschen: der weiße Test meldet fast immer": "AR(1)-Hintergrund (φ = 0,8) ohne Linie: Der Test auf weißes Rauschen schlägt an, weil der Hintergrund bei tiefen Frequenzen von selbst hoch liegt.",
     "Schwache Linie auf rotem Hintergrund": "Eine Linie 12 dB unter der Hintergrundvarianz: Der Test gegen den angepassten AR(1)-Hintergrund findet sie an der richtigen Stelle, der weiße Test meldet nur den Hintergrund.",
     "Steiler Hintergrund: Vorfilterung": "Hintergrund mit 64 dB Spannweite, keine Linie: Der weiße Test meldet immer; erst die Vorfilterung mit einem AR(2)-Modell macht die Residuen weiß und der Test hält.",
 }

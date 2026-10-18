@@ -65,7 +65,7 @@ def test_verdict_background_text():
     assert kind == "warning"
     assert text == ("Bei AR(1) mit φ = 0,8 und n = 512 meldet der weiße Test in 100 % der Läufe Alarm (reines Rauschen), der Test gegen den angepassten AR(1)-Hintergrund in 4,3 %, "
                     "der lokale Mittelwert mit F-Schwelle in 5,3 %, der naive Median in 48 %. Eine Linie 18 dB unter der Hintergrundvarianz erkennt der angepasste Test an der richtigen Stelle in 80 %, "
-                    "der lokale Mittelwert in 42 % (bei -6 dB: 79 %, die Linie verdeckt sich selbst). **Die Schwelle gilt nur gegen den richtigen Hintergrund.**")
+                    "der lokale Mittelwert in 42 % (bei -6 dB: 79 %, die Linie verdeckt sich selbst). **Die Schwelle gilt nur gegen einen passenden Hintergrund.**")
 
 
 def test_verdict_interval_text():
@@ -75,14 +75,14 @@ def test_verdict_interval_text():
     kind, text = ev.verdict_interval(rows)
     assert kind == "info"
     assert text == ("Das 95-%-Intervall des Periodogramms ist 21,6 dB breit und deckt die wahre Dichte in 95 %; Welch (K = 7) ist 6,8 dB breit und deckt am scharfen Gipfel (Radius 0,98) 91 %, "
-                    "das Jackknife 88 %. **Schmaler heißt nicht sicherer: Am scharfen Gipfel fehlt der Erwartungswert.**")
+                    "das Jackknife 88 %. **Schmaler heißt nicht sicherer: Am scharfen Gipfel streut Welch stärker, als die Freiheitsgrade annehmen.**")
 
 
 def test_verdict_prewhiten_text():
     kind, text = ev.verdict_prewhiten({"n": 256, "runs": 10, "white": 1.0, "known": 0.8885, "prewhitened": 0.05, "dynamic_db": 63.7})
     assert kind == "warning"
     assert text == ("Bei einem Hintergrund mit 64 dB Spannweite meldet der weiße Test in 100 % der Läufe Alarm, der Test gegen den bekannten Hintergrund (Rechteckfenster) in 89 %, "
-                    "der Fisher-Test auf den AR(2)-Residuen in 5,0 %. **Leckage macht auch den wahren Hintergrund unbrauchbar; Vorfilterung hilft.**")
+                    "der Fisher-Test auf den AR(2)-Residuen in 5,0 %. **Bei dieser Spannweite macht die Leckage auch den wahren Hintergrund unbrauchbar; Vorfilterung hilft.**")
 
 
 def test_decimal_comma_and_amplitude():

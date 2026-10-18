@@ -322,7 +322,7 @@ def verdict_background(res: dict) -> tuple[str, str]:
     return "warning", (f"Bei AR(1) mit φ = {de(phi, 1)} und n = {n} meldet der weiße Test in {de(100 * a['white'], 0)} % der Läufe Alarm (reines Rauschen), der Test gegen den angepassten AR(1)-Hintergrund in {de(100 * a['fitted'], 1)} %, "
                        f"der lokale Mittelwert mit F-Schwelle in {de(100 * a['local'], 1)} %, der naive Median in {de(100 * a['median'], 0)} %. Eine Linie {de(abs(low), 0)} dB unter der Hintergrundvarianz erkennt der angepasste Test an der richtigen Stelle "
                        f"in {de(100 * p_low['fitted'], 0)} %, der lokale Mittelwert in {de(100 * p_low['local'], 0)} % (bei {de(top, 0)} dB: {de(100 * p_top['local'], 0)} %, die Linie verdeckt sich selbst). "
-                       "**Die Schwelle gilt nur gegen den richtigen Hintergrund.**")
+                       "**Die Schwelle gilt nur gegen einen passenden Hintergrund.**")
 
 
 def verdict_interval(rows: list[dict]) -> tuple[str, str]:
@@ -331,9 +331,9 @@ def verdict_interval(rows: list[dict]) -> tuple[str, str]:
     r_hi = max(x["r"] for x in rows)
     return "info", (f"Das 95-%-Intervall des Periodogramms ist {de(at(r_hi, 'Gipfel', 'Periodogramm χ²')['width_db'], 1)} dB breit und deckt die wahre Dichte in {de(100 * at(r_hi, 'Gipfel', 'Periodogramm χ²')['coverage'], 0)} %; "
                     f"Welch (K = {at(r_hi, 'Gipfel', 'Welch χ²')['K']}) ist {de(at(r_hi, 'Gipfel', 'Welch χ²')['width_db'], 1)} dB breit und deckt am scharfen Gipfel (Radius {de(r_hi, 2)}) {de(100 * at(r_hi, 'Gipfel', 'Welch χ²')['coverage'], 0)} %, "
-                    f"das Jackknife {de(100 * at(r_hi, 'Gipfel', 'Welch Jackknife')['coverage'], 0)} %. **Schmaler heißt nicht sicherer: Am scharfen Gipfel fehlt der Erwartungswert.**")
+                    f"das Jackknife {de(100 * at(r_hi, 'Gipfel', 'Welch Jackknife')['coverage'], 0)} %. **Schmaler heißt nicht sicherer: Am scharfen Gipfel streut Welch stärker, als die Freiheitsgrade annehmen.**")
 
 
 def verdict_prewhiten(res: dict) -> tuple[str, str]:
     return "warning", (f"Bei einem Hintergrund mit {de(res['dynamic_db'], 0)} dB Spannweite meldet der weiße Test in {de(100 * res['white'], 0)} % der Läufe Alarm, der Test gegen den bekannten Hintergrund (Rechteckfenster) in "
-                       f"{de(100 * res['known'], 0)} %, der Fisher-Test auf den AR(2)-Residuen in {de(100 * res['prewhitened'], 1)} %. **Leckage macht auch den wahren Hintergrund unbrauchbar; Vorfilterung hilft.**")
+                       f"{de(100 * res['known'], 0)} %, der Fisher-Test auf den AR(2)-Residuen in {de(100 * res['prewhitened'], 1)} %. **Bei dieser Spannweite macht die Leckage auch den wahren Hintergrund unbrauchbar; Vorfilterung hilft.**")

@@ -12,7 +12,7 @@ Verteilung (Fishers g ist exakt), und der Hintergrund kann gefärbt sein.
 
 ## Warum dieses Problem
 
-Jede Aufzeichnung hat einen höchsten Gipfel, auch reines Rauschen. Die Schwelle für eine einzelne Frequenz ist für das Maximum über viele Frequenzen nutzlos, und bei rotem Rauschen ist der Hintergrund selbst bei
+Jede Aufzeichnung hat einen höchsten Gipfel, auch reines Rauschen. Die Schwelle für eine einzelne Frequenz reicht für das Maximum über viele Frequenzen nicht (ab einigen Dutzend Frequenzen überschreitet es sie fast immer), und bei rotem Rauschen ist der Hintergrund selbst bei
 tiefen Frequenzen hoch. Die Demo zeigt, wie hoch der Falschalarm ohne die richtige Schwelle ist, was die richtige Schwelle kostet, und wie unsicher ein Spektrum bleibt (Konfidenzintervalle).
 
 ## Modell
@@ -36,7 +36,7 @@ Alle Zahlen stehen in `tests/test_claims.py` und `tests/test_experiments_golden.
 | Wie oft täuscht der höchste Gipfel bei reinem weißem Rauschen (Niveau 5 %)? | Mit der Einzelfrequenz-Schwelle in 58,1 % (n = 32), 98,9 % (n = 128) und 100 % (n = 512) der Läufe. Fishers g: 5,0 / 5,1 / 4,9 %; Bonferroni 2,0 / 3,7 / 4,2 % und Šidák 2,1 / 3,8 / 4,4 % sind mit geschätztem Mittelwert konservativ. |
 | Wie gut ist die Erkennung (Linie in weißem Rauschen, Fishers g)? | Erkannt an der richtigen Stelle bei n = 128: 41 % (−9 dB), 84 % (−6 dB), 99 % (−3 dB), 100 % (0 dB); bei n = 512 schon 99 % bei −9 dB. |
 | Was macht rotes Rauschen mit dem weißen Test (nur Rauschen)? | Falschalarm bei AR(1) mit φ = 0,5 / 0,8 / 0,95: 61,1 / 99,4 / 100 % (n = 128) und 87,7 / 100 / 100 % (n = 512). Der Test gegen das angepasste AR(1): 2,7 / 3,5 / 3,2 % und 3,9 / 4,3 / 4,7 %; der lokale Mittelwert mit F-Schwelle 5,0 / 5,8 / 21,9 % (n = 128) und 5,5 / 5,3 / 6,2 % (n = 512); ein naiver gleitender Median mit Šidák-Schwelle 28,7 / 32,2 / 57,0 % (n = 128). |
-| Findet der Test gegen den Hintergrund die Linie (AR(1) φ = 0,8, n = 512, Linie gegen die Hintergrundvarianz)? | Angepasstes AR(1): 80 % (−18 dB), 98 % (−15 dB), 100 % ab −12 dB; lokaler Mittelwert 42 % (−18 dB), nie über 79 % (−6 dB), weil die Linie ihre Nachbarbins anhebt; der weiße Test meldet zwar, aber an der falschen Stelle: richtig 0 % (−18 dB), 53 % (−9 dB). |
+| Findet der Test gegen den Hintergrund die Linie (AR(1) φ = 0,8, n = 512, Linie gegen die Hintergrundvarianz)? | Angepasstes AR(1): 80 % (−18 dB), 98 % (−15 dB), 100 % ab −12 dB; lokaler Mittelwert 42 % (−18 dB), bis −6 dB höchstens 79 % (bei stärkerer Linie in Nachmessungen etwa 82 %), vermutlich weil die Linie ihre Nachbarbins anhebt; der weiße Test meldet zwar, aber an der falschen Stelle: richtig 0 % (−18 dB), 53 % (−9 dB). |
 | Wie unsicher ist das Spektrum (95-%-Intervall, n = 512, AR(2)-Resonanz)? | Das Periodogramm (ν = 2) ist 21,6 dB breit, Überdeckung 94,0 bis 95,3 %. Welch (Hann, Länge 128, K = 7, ν = 13,4) ist 6,8 dB breit, Überdeckung 94,7 bis 95,3 % bei Radius 0,9 und **90,8 % am scharfen Gipfel** bei Radius 0,98. Jackknife über die 7 Segmente: 8,0 dB breit, 92,7 bis 94,3 % und 88,4 % am scharfen Gipfel. |
 | Was hilft bei steilem Hintergrund (64 dB Spannweite, n = 256, nur Rauschen)? | Der weiße Test meldet in 100 %, der Quotient durch den **bekannten** Hintergrund (Rechteckfenster, Leckage) in 88,8 %, der Fisher-Test auf den AR(2)-Residuen in 5,0 %. |
 
@@ -45,9 +45,9 @@ Alle Zahlen stehen in `tests/test_claims.py` und `tests/test_experiments_golden.
 - **Heimvorteil:** Gaußsches stationäres Rauschen und eine bekannte Modellklasse (AR); bei anderem Rauschen wären die Zahlen schlechter.
 - **Rechteckfenster:** Die Leckage-Aussage gilt für das Rechteckfenster; ein Hann-Fenster verschiebt sie, ändert aber die Verteilung der Statistik (Fishers g ist dann nicht mehr exakt).
 - **Der lokale Mittelwert** verdeckt starke Linien (die Linie hebt ihre Nachbarn an); bei sehr steilen Spektren (φ = 0,95, n = 128) hält er das Niveau nicht (21,9 %).
-- **Jackknife und Welch** hängen an K = 7 Segmenten; mit mehr Segmenten wird die Unterdeckung kleiner.
-- **Vorfilterung:** gezeigt wird nur der Falschalarm; einen Leistungsvorteil ließ die Messreihe nicht erkennen.
-- **Whittle-Likelihood:** nicht gebaut (Gewinn gegenüber Yule-Walker bei AR(1) klein, nur als Absatz in der Mathematik).
+- **Jackknife und Welch** unterdecken bei K = 7 Segmenten (überlappend, nicht unabhängig); in Nachmessungen verringerten mehr Segmente die Unterdeckung nicht. Am scharfen Gipfel streut Welch stärker, als ν = 13,4 annimmt, das Intervall ist dort zu schmal.
+- **Vorfilterung:** gezeigt wird nur der Falschalarm; die Erkennungsleistung wurde nicht gemessen.
+- **Whittle-Likelihood:** nicht gebaut (Gewinn im mittleren Fehler gegenüber Yule-Walker bei AR(1) klein, nur als Absatz in der Mathematik).
 - **Quellen** (Fisher 1929, Torrence und Compo 1998, Mann und Lees 1996, Whittle 1953): nicht gelesen; Formeln per Simulation, Handrechnung und gegen scipy geprüft.
 
 ## Verifikation

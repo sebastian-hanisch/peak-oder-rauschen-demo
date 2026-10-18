@@ -50,7 +50,7 @@ st.title("🔍 Peak oder Rauschen? Wann ist ein Gipfel ein Befund")
 st.markdown(
     """
 Jede Aufzeichnung hat einen **höchsten Gipfel**, auch reines Rauschen. Ob er etwas bedeutet, entscheidet eine **Schwelle**, und die hängt an zwei Dingen: an der **Zahl der Frequenzen**, unter denen der höchste
-Gipfel ausgesucht wurde (das Maximum über viele Werte überschreitet die Schwelle für einen einzelnen fast immer), und am **Hintergrund**, gegen den getestet wird (rotes Rauschen hat bei tiefen Frequenzen von selbst
+Gipfel ausgesucht wurde (das Maximum über einige Dutzend Werte überschreitet die Schwelle für einen einzelnen fast immer), und am **Hintergrund**, gegen den getestet wird (rotes Rauschen hat bei tiefen Frequenzen von selbst
 hohe Gipfel). Dazu kommt die Frage, wie unsicher ein Spektrum überhaupt ist: das **Konfidenzintervall**.
 
 Dies ist die achte Demo der Reihe „Spektral- und Wavelet-Analyse“, auf die Demos zu **Periodogramm**, **Welch**, **Multitaper**, **AR-Spektrum** und **Lomb-Scargle** aufbauend (dort: die Verteilung der Leistung
@@ -214,11 +214,11 @@ st.markdown(
 | Annahme | Was passiert, wenn sie verletzt ist | Wer setzt an |
 |---|---|---|
 | **Gaußsches, stationäres Rauschen** | Die Verteilung der Statistik ändert sich; die Schwellen sind dann nicht mehr exakt. | – |
-| **Der Hintergrund ist weiß oder bekannt** | Der weiße Test meldet bei rotem Rauschen fast immer; der Hintergrund muss gegen angepasst, lokal geschätzt oder vorgefiltert werden. | Zeit-Frequenz-Signifikanz |
+| **Der Hintergrund ist weiß oder bekannt** | Der weiße Test meldet bei starkem rotem Rauschen (φ ≥ 0,8) fast immer; der Hintergrund muss gegen angepasst, lokal geschätzt oder vorgefiltert werden. | Zeit-Frequenz-Signifikanz |
 | **Eine Linie, ein Test** | Mehrere Linien oder mehrere Tests brauchen eine weitere Korrektur; Fishers g prüft nur den höchsten Gipfel. | Linienzahl (MUSIC, MDL) |
 | **Das Rechteckfenster ist erlaubt** | Bei steilen Spektren lässt die Leckage selbst den wahren Hintergrund als Maßstab scheitern. | Fenster, Multitaper |
 | **Die Frequenzen sind unabhängig** | Zero-Padding oder unregelmäßige Zeiten erzeugen mehr Gitterpunkte, aber nicht mehr unabhängige; die Zahl m ist dann unklar. | Lomb-Scargle |
-| **Das Intervall deckt die Wahrheit** | Es deckt den Erwartungswert des Schätzers; am scharfen Gipfel liegt der vom wahren Wert entfernt (Bias). Jackknife mit wenigen Segmenten unterdeckt. | Mehr Segmente, Bootstrap |
+| **Das Intervall deckt die Wahrheit** | Am scharfen Gipfel streut Welch stärker, als ν = 13,4 annimmt (überlappende Segmente, Gipfel schmaler als das Fenster); das Intervall ist zu schmal. Das Jackknife unterdeckt bei wenigen, überlappenden Segmenten; mehr Segmente allein beheben das nicht. | Bootstrap |
 """,
 )
 
@@ -241,8 +241,8 @@ Jackknife: Pseudowerte $K\ln\bar S - (K-1)\ln\bar S_{(-i)}$ über die $K$ Segmen
 
 **Vorfilterung.** AR($p$) per Burg anpassen, Residuen $e_t = x_t - \sum_k a_k x_{t-k}$; Fisher-Test auf dem Periodogramm der Residuen.
 
-**Whittle.** Die Whittle-Näherung der Likelihood, $\sum_k [\ln S(f_k;\theta) + I_k/S(f_k;\theta)]$, schätzt die Parameter eines parametrischen Hintergrunds. Für AR(1) hat sie bei sehr kurzen Reihen einen etwas kleineren Bias als
-Yule-Walker, der Gewinn im mittleren Fehler ist klein; hier nicht gebaut.
+**Whittle.** Die Whittle-Näherung der Likelihood, $\sum_k [\ln S(f_k;\theta) + I_k/S(f_k;\theta)]$, schätzt die Parameter eines parametrischen Hintergrunds. Für AR(1) hat sie bei sehr kurzen Reihen in einer Nachmessung (n = 16 bis 64) einen etwa halb so großen Bias wie
+Yule-Walker; der Gewinn im mittleren Fehler ist klein (0 bis 10 %); hier nicht gebaut.
 
 **Quellen.** Lehrbuchwissen und Aufsätze (Fisher 1929; Torrence und Compo 1998; Mann und Lees 1996; Whittle 1953). Formeln hier per Simulation, Handrechnung und gegen scipy geprüft; die Quellen selbst wurden nicht gelesen.
         """

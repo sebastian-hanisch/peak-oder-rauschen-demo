@@ -43,7 +43,7 @@ def test_preset_same_series_with_the_fisher_threshold_gives_no_alarm():
 
 
 def test_preset_red_noise_the_white_test_alarms_and_the_tests_against_the_background_do_not():
-    a = A("Rotes Rauschen: der weiße Test meldet immer")
+    a = A("Rotes Rauschen: der weiße Test meldet fast immer")
     assert a.settings.background == "AR(1) φ = 0,8" and not a.settings.has_line
     assert a.results["Fisher g (weiß)"].alarm and ev.outcome(a.results["Fisher g (weiß)"], False) == "Falschalarm"
     assert not a.results["AR(1) angepasst + Šidák"].alarm and not a.results["Lokaler Mittelwert + F-Schwelle"].alarm
@@ -103,7 +103,7 @@ def test_readme_background_power_numbers():
     p = {r["snr"]: r for r in get("background")["power"]}
     assert (pct(p[-18]["fitted"], 0), pct(p[-15]["fitted"], 0), pct(p[-12]["fitted"], 0), pct(p[-6]["fitted"], 0)) == ("80", "98", "100", "100")
     assert (pct(p[-18]["local"], 0), pct(p[-6]["local"], 0), pct(p[-9]["white"], 0), pct(p[-18]["white"], 0)) == ("42", "79", "53", "0") and max(r["local"] for r in p.values()) == p[-6]["local"]
-    for s in ("80 % (−18 dB), 98 % (−15 dB), 100 % ab −12 dB", "42 % (−18 dB), nie über 79 % (−6 dB)", "0 % (−18 dB), 53 % (−9 dB)"):
+    for s in ("80 % (−18 dB), 98 % (−15 dB), 100 % ab −12 dB", "42 % (−18 dB), bis −6 dB höchstens 79 %", "0 % (−18 dB), 53 % (−9 dB)"):
         assert s in README
     assert C.EXP_BGP_N == 512 and C.EXP_BGP_PHI == 0.8
 
