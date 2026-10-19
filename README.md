@@ -1,7 +1,6 @@
 # Peak oder Rauschen? Ein höchster Gipfel ist noch kein Befund – die Schwelle hängt an der Zahl der Frequenzen und am Hintergrund – Streamlit-Demo
 
-<!-- TODO nach dem Deploy: direkt hierher den Live-Link setzen (Leerzeile davor und danach):
-**[→ Demo live ausprobieren](https://sebastianhanisch-peak-oder-rauschen-demo.streamlit.app/)** -->
+**[→ Demo live ausprobieren](https://sebastianhanisch-peak-oder-rauschen-demo.streamlit.app/)**
 
 Achte Demo der Reihe **Spektral- und Wavelet-Analyse** in der „Konzepte“-Reihe für die Website „Sebastian Hanisch – Operations Research und Machine Learning“, aufbauend auf den Demos zum **Periodogramm**,
 zu **Welch**, zum **Multitaper**, zum **AR-Spektrum** und zu **Lomb-Scargle**. Ein simuliertes Signal (weißer oder gefärbter Hintergrund, optional eine Linie) wird mit sieben Tests auf „Peak oder Rauschen“ geprüft;
@@ -109,4 +108,4 @@ Gebaut mit Streamlit, Plotly, NumPy, pandas und fpdf2.
 
 ---
 
-Diese Demo ist Teil des Portfolios von [Sebastian Hanisch](https://sebastianhanisch.net) – Operations Research und Machine Learning ([Über mich](https://sebastianhanisch.net/ueber-mich.html)). Mehr zu den Demos: [Interaktive Demos](https://sebastianhanisch.net/demos.html).
+Diese Demo ist Teil des Portfolios von [Sebastian Hanisch](https://sebastianhanisch.net) – Operations Research und Machine Learning ([Über mich](https://sebastianhanisch.net/ueber-mich.html)). Mehr zur Reihe: [Spektren und Wavelets: von Fourier zum Vergleich](https://sebastianhanisch.net/konzepte-spektral-wavelet-analyse.html).
